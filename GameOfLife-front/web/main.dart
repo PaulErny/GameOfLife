@@ -1,24 +1,51 @@
 import 'dart:html';
 import 'dart:math';
 
-CanvasElement canvas;    
-CanvasRenderingContext2D ctx;
+import './Board.dart';
+import 'globals.dart' as globals;
 
-const int CELL_SIZE = 10;
+Board board;
 
 void main() {
-    canvas = querySelector('#canvas');
-    ctx = canvas.getContext('2d');
-    drawCell(new Point(10, 10), "black");
+    globals.canvas = querySelector('#canvas');
+    globals.ctx = globals.canvas.getContext('2d');
+    globals.CANVAS_SIZE = globals.DEFAULT_CANVAS_SIZE;
+    globals.CELL_SIZE = (globals.CANVAS_SIZE / globals.NB_CELLS).round();
+
+    (querySelector("#plus") as ButtonElement ).onClick.listen(addCells);
+    (querySelector("#less") as ButtonElement ).onClick.listen(removeCells);
+    querySelector("#nb-cells").text = globals.NB_CELLS.toString();
+    globals.canvas.height = globals.NB_CELLS * globals.CELL_SIZE;
+    globals.canvas.width = globals.NB_CELLS * globals.CELL_SIZE;
+    globals.CANVAS_SIZE = globals.canvas.height;
+    board = new Board((globals.CANVAS_SIZE / globals.CELL_SIZE).round(), (globals.CANVAS_SIZE / globals.CELL_SIZE).round());
 }
 
-void drawCell(Point coords, String color) {
-    ctx..fillStyle = color
-        ..strokeStyle = "white";
-
-    final int x = coords.x * CELL_SIZE;
-    final int y = coords.y * CELL_SIZE;
-
-    ctx..fillRect(x, y, CELL_SIZE, CELL_SIZE)
-        ..strokeRect(x, y, CELL_SIZE, CELL_SIZE);
+void addCells(MouseEvent event) {
+    globals.NB_CELLS++;
+    querySelector("#nb-cells").text = globals.NB_CELLS.toString();
+    globals.CANVAS_SIZE = globals.DEFAULT_CANVAS_SIZE;
+    globals.CELL_SIZE = (globals.CANVAS_SIZE / globals.NB_CELLS).round();
+    // canvas size can be far from 650 when the cell's size is less than 1 but the correct number of cells is drawn anyway
+    globals.canvas.height = globals.NB_CELLS * globals.CELL_SIZE;
+    globals.canvas.width = globals.NB_CELLS * globals.CELL_SIZE;
+    globals.CANVAS_SIZE = globals.canvas.height;
+    board = new Board((globals.CANVAS_SIZE / globals.CELL_SIZE).round(), (globals.CANVAS_SIZE / globals.CELL_SIZE).round());
 }
+
+void removeCells(MouseEvent event) {
+    if (globals.NB_CELLS > 10) {
+        globals.NB_CELLS--;
+        querySelector("#nb-cells").text = globals.NB_CELLS.toString();
+        globals.CANVAS_SIZE = globals.DEFAULT_CANVAS_SIZE;
+        globals.CELL_SIZE = (globals.CANVAS_SIZE / globals.NB_CELLS).round();
+        globals.canvas.height = globals.NB_CELLS * globals.CELL_SIZE;
+        globals.canvas.width = globals.NB_CELLS * globals.CELL_SIZE;
+        globals.CANVAS_SIZE = globals.canvas.height;
+        board = new Board((globals.CANVAS_SIZE / globals.CELL_SIZE).round(), (globals.CANVAS_SIZE / globals.CELL_SIZE).round());
+    }
+}
+// void Start(MouseEvent event) {
+//   clear();
+// }
+
