@@ -3,16 +3,39 @@ import 'dart:core';
 import 'globals.dart' as globals;
 
 class Board {
-    int rows;
-    int cols;
-    List _board;
+    int _rows;
+    int _cols;
+    List<List<int>> _board;
+    List<Point> _darkPoints;
+    List<Point> _adjacentWhitePoints;
+    // List<List<int>> _nextBoard;
+    // List<Point> _nextDarkPoints;
 
-    List get board {
+    int get rows {
+        return _rows;
+    }
+
+    int get cols {
+        return _cols;
+    }
+
+    List<Point> get darkPoints {
+        return _darkPoints;
+    }
+
+    List<Point> get adjacentWhitePoints {
+        return _adjacentWhitePoints;
+    }
+
+    List<List<int>> get board {
         return _board;
     }
 
-    Board(this.rows, this.cols) {
-        _board = List.generate(rows, (i) => List.filled(cols, 0, growable: false), growable: false);
+    Board(this._rows, this._cols) {
+        _darkPoints = [];
+        // _nextDarkPoints = [];
+        _adjacentWhitePoints = [];
+        _board = List.generate(_rows, (i) => List.filled(_cols, 0, growable: false), growable: false);
         for (int y=0; y < _board.length; y++) {
             for (int x=0; x < _board.length; x++) {
                 if (_board[y][x] == 0) {
@@ -40,11 +63,54 @@ class Board {
         ..fillRect(0, 0, globals.CANVAS_SIZE, globals.CANVAS_SIZE);
     }
 
+    // void addDarkPoints(Point coord) {
+    //     _nextDarkPoints.add(coord);
+    //     _darkPoints.remove(coord);
+    // }
+
+    void update(List<Point> nextDarkCells, List<Point> nextWhiteCells) {
+        for (Point cell in nextDarkCells) {
+            updateCell(cell, 1);
+        }
+        for (Point cell in nextWhiteCells) {
+            updateCell(cell, 0);
+        }
+        // _darkPoints = _nextDarkPoints;
+        // _nextDarkPoints = [];
+
+    }
+
     void updateCell(Point coords, int state) {
+        _board[coords.y][coords.x] = state;
         if (state == 0) {
+            _darkPoints.remove(coords);
             drawCell(coords, 'white');
+            for (int i = -1; i < 2; i++) {
+                for (int j = -1; j < 2; j++) {
+                    int x = coords.x + i;
+                    int y = coords.y + j;
+                    if (x >= 0 && x < _cols && y >= 0 && y < _rows) {
+                        _adjacentWhitePoints.remove(Point(x, y));
+                    }
+                }
+            }
         } else {
-            drawCell(coords, 'black');
+            if (_darkPoints.contains(coords) == false) {
+                _darkPoints.add(coords);
+                drawCell(coords, 'black');
+                // add adjacent white points
+                // a cell may be added several times
+                // this is needed to reduce computation time when removing the white cells adjacent to a removed black cell
+                for (int i = -1; i < 2; i++) {
+                    for (int j = -1; j < 2; j++) {
+                        int x = coords.x + i;
+                        int y = coords.y + j;
+                        if (x >= 0 && x < _cols && y >= 0 && y < _rows) {
+                            _adjacentWhitePoints.add(Point(x, y));
+                        }
+                    }
+                }
+            }
         }
     }
 }
