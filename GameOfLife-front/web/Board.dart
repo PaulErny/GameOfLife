@@ -5,18 +5,20 @@ import 'globals.dart' as globals;
 class Board {
     int rows;
     int cols;
-    var board;
+    List _board;
+
+    List get board {
+        return _board;
+    }
 
     Board(this.rows, this.cols) {
-        var board = List.generate(this.rows, (i) => List.filled(this.cols, 0, growable: false), growable: false);
-        board[5][5] = 1;
-        
-        for (int y=0; y < board.length; y++) {
-            for (int x=0; x < board.length; x++) {
-                if (board[y][x] == 0) {
-                    this.drawCell(new Point(x, y), "white");
+        _board = List.generate(rows, (i) => List.filled(cols, 0, growable: false), growable: false);
+        for (int y=0; y < _board.length; y++) {
+            for (int x=0; x < _board.length; x++) {
+                if (_board[y][x] == 0) {
+                    drawCell(Point(x, y), 'white');
                 } else {
-                    this.drawCell(new Point(x, y), "black");
+                    drawCell(Point(x, y), 'black');
                 }
             }
         }
@@ -24,7 +26,7 @@ class Board {
 
     void drawCell(Point coords, String color) {
         globals.ctx..fillStyle = color
-            ..strokeStyle = "lightgray";
+            ..strokeStyle = 'lightgray';
 
         final int x = coords.x * globals.CELL_SIZE;
         final int y = coords.y * globals.CELL_SIZE;
@@ -34,7 +36,15 @@ class Board {
     }
 
     void clear() {
-        globals.ctx..fillStyle = "white"
+        globals.ctx..fillStyle = 'white'
         ..fillRect(0, 0, globals.CANVAS_SIZE, globals.CANVAS_SIZE);
+    }
+
+    void updateCell(Point coords, int state) {
+        if (state == 0) {
+            drawCell(coords, 'white');
+        } else {
+            drawCell(coords, 'black');
+        }
     }
 }
