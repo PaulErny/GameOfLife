@@ -6,7 +6,9 @@ import 'globals.dart' as globals;
 class Brain {
   bool _shouldStop = true;
   Board _board;
+  /// containes the black cells to be drawn on the next iteration
   List<Point> _nextDarkCells;
+  /// containes the black cells that have been reverted to wihte to be drawn on the next iteration
   List<Point> _nextWhiteCells;
 
   bool get isStopped {
@@ -39,6 +41,8 @@ class Brain {
     if (timer != null && _shouldStop) {
       timer.cancel();
     }
+    // if a black cell has less than 2 or more the 3 neighbours, it is reverted to white
+    // otherwise, it remains black 
     for (Point cell in _board.darkPoints) {
       int count = countNeighbours(cell);
       if (count < 2 || count > 3) {
@@ -47,6 +51,7 @@ class Brain {
         _nextDarkCells.add(cell);
       }
     }
+    // if a white cell has 3 neighbours, it will be black on the next iteration
     for (Point cell in _board.adjacentWhitePoints) {
       int count = countNeighbours(cell);
       if (count == 3) {
