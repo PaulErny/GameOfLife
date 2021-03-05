@@ -2,6 +2,7 @@
 Web version of Conway's Game of life
 
 # How to run the project 🚀?
+A web version is availible and playable [here](https://paulerny.github.io/GameOfLife/) but if you still want to have it running localy, follow these steps :
 
 ### 1 - Get the code !
 That first step is pretty strait forward 😉
