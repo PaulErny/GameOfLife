@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="scaffolded-by" content="https://github.com/dart-lang/stagehand">
+    <title>GameOfLife</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="favicon.ico">
+    <script defer src="main.dart.js"></script>
+  </head>
+
+  <body>
+
+    <h1>Conway's Game of life</h1>
+    <div class="content">
+      <canvas id="canvas" width="650" height="650"></canvas>
+      
+      <div class="wrapper">
+
+          <div class="buttons">
+            <div class="inputs-btn">
+              <span>
+                Cells per row :
+              </span>
+              <div>
+                <button id="less">-</button>
+                <span id="nb-cells">20</span>
+                <button id="plus">+</button>
+              </div>
+            </div>
+            <div class="inputs-btn">
+              <span>
+                Iteration :
+              </span>
+              <div>
+                <button disabled id="prev"><</button>
+                <span id="turn">0</span>
+                <button id="next">></button>
+              </div>
+            </div>
+          </div>
+
+        <button id="start">Start</button>
+
+      </div>
+    </div>
+
+  </body>
+</html>
