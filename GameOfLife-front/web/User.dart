@@ -66,7 +66,9 @@ class User {
     globals.canvas.height = globals.NB_CELLS * globals.CELL_SIZE;
     globals.canvas.width = globals.NB_CELLS * globals.CELL_SIZE;
     globals.CANVAS_SIZE = globals.canvas.height;
-    toggle(null);
+    if (_hasStarted) {
+      toggle(null);
+    }
     _board = Board((globals.CANVAS_SIZE / globals.CELL_SIZE).round(),
         (globals.CANVAS_SIZE / globals.CELL_SIZE).round());
     _brain.reset(_board);
