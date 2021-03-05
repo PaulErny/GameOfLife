@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:html';
 import 'dart:math';
 import 'Board.dart';
 import 'globals.dart' as globals;
@@ -6,6 +7,7 @@ import 'globals.dart' as globals;
 class Brain {
   bool _shouldStop = true;
   Board _board;
+  int _currentTurn;
   /// containes the black cells to be drawn on the next iteration
   List<Point> _nextDarkCells;
   /// containes the black cells that have been reverted to wihte to be drawn on the next iteration
@@ -16,12 +18,14 @@ class Brain {
   }
 
   Brain(this._board) {
+    _currentTurn = 0;
     _nextDarkCells = [];
     _nextWhiteCells = [];
   }
 
   /// resets the brain for a new start
   void reset(Board board) {
+    _currentTurn = 0;
     _shouldStop = true;
     _nextWhiteCells.clear();
     _nextDarkCells.clear();
@@ -59,6 +63,8 @@ class Brain {
       }
     }
     _board.update(_nextDarkCells, _nextWhiteCells);
+    _currentTurn++;
+    querySelector('#turn').text = _currentTurn.toString();
   }
 
   /// returns the number of cells adjacent to the one at position $coords
