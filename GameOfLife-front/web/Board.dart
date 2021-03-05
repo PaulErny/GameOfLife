@@ -46,7 +46,7 @@ class Board {
         if (_board[y][x] == 0) {
           drawCell(Point(x, y), 'white');
         } else {
-          drawCell(Point(x, y), 'black');
+          drawCell(Point(x, y), '#2b8ac6');
         }
       }
     }
@@ -105,7 +105,7 @@ class Board {
       _board[coords.y][coords.x] = state;
       if (_darkPoints.contains(coords) == false) {
         _darkPoints.add(coords);
-        drawCell(coords, 'black');
+        drawCell(coords, '#2b8ac6');
         // If adding a black cell -> add all its adjacent white cells to the $_adjacentWhitePoints list.
         // A white cell may be adjacent to several black cells and therefore added several times to the list.
         // This is needed to reduce computation time when removing the white cells adjacent to a removed black cell

@@ -40,8 +40,12 @@ class User {
     _hasStarted = !_hasStarted;
     if (_hasStarted) {
       (querySelector('#start') as ButtonElement).text = 'Stop';
+      (querySelector('#start') as ButtonElement).style.background = 'linear-gradient(#e54e4e 0%,#d53838 100%)';
+      (querySelector('#start') as ButtonElement).style.borderBottom = '4px solid #c62b2b';
     } else {
       (querySelector('#start') as ButtonElement).text = 'Start';
+      (querySelector('#start') as ButtonElement).style.background = 'linear-gradient(#4eb5e5 0%,#389ed5 100%)';
+      (querySelector('#start') as ButtonElement).style.borderBottom = '4px solid #2b8ac6';
     }
   }
 
