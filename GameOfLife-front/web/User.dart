@@ -29,10 +29,12 @@ class User {
     event.preventDefault();
     int x = ((event.client.x - _clientRect.left) / globals.CELL_SIZE).floor();
     int y = ((event.client.y - _clientRect.top) / globals.CELL_SIZE).floor();
-    if (_board.board[y][x] == 0) {
-      _board.updateCell(Point(x, y), 1);
-    } else {
-      _board.updateCell(Point(x, y), 0);
+    if (x >= 0 && x < _board.cols && y >= 0 && y < _board.rows) {
+      if (_board.board[y][x] == 0) {
+        _board.updateCell(Point(x, y), 1);
+      } else {
+        _board.updateCell(Point(x, y), 0);
+      }
     }
   }
 
