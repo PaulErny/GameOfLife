@@ -94,4 +94,5 @@ button:disabled {
 #canvas {
   border: solid thin black;
   margin-left: 18vw;
+  cursor: pointer;
 }
