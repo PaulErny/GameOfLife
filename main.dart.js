@@ -2222,12 +2222,12 @@ return s-C.a.q((t&&C.a).q(t,H.q(a.b)),H.q(a.a))},
 sai:function(a){this.d=u.I.a(a)},
 saj:function(a){this.e=u.I.a(a)}}
 E.b1.prototype={
-aw:function(a){var t,s,r,q,p
+aw:function(a){var t,s,r,q,p,o=this
 u.X.a(a)
 a.preventDefault()
 t=a.clientX
 a.clientY
-s=this.a.left
+s=o.a.left
 s.toString
 if(typeof t!=="number")return t.a6()
 r=$.C
@@ -2235,20 +2235,22 @@ if(typeof r!=="number")return H.V(r)
 q=C.d.V((t-s)/r)
 a.clientX
 r=a.clientY
-s=this.a.top
+s=o.a.top
 s.toString
 if(typeof r!=="number")return r.a6()
 t=$.C
 if(typeof t!=="number")return H.V(t)
 p=C.d.V((r-s)/t)
-t=this.d
+if(q>=0){t=o.d
+t=q<t.b&&p>=0&&p<t.a}else t=!1
+if(t){t=o.d
 s=t.c
 if(p<0||p>=s.length)return H.z(s,p)
 s=s[p]
 if(q<0||q>=s.length)return H.z(s,q)
 r=u.e
 if(s[q]===0)t.B(new P.n(q,p,r),1)
-else t.B(new P.n(q,p,r),0)},
+else t.B(new P.n(q,p,r),0)}},
 a_:function(a){var t,s,r,q=this
 u.X.a(a)
 t=q.e
