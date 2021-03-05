@@ -6,10 +6,12 @@ import 'Brain.dart';
 class User {
   var _clientRect;
   bool _hasStarted = false;
+  ButtonElement _startBtn;
   Board _board;
   Brain _brain;
 
   User() {
+    _startBtn = (querySelector('#start') as ButtonElement);
     _clientRect = globals.ctx.canvas.getBoundingClientRect();
     globals.ctx.canvas.onMouseDown.listen(placeCell);
     (querySelector('#start') as ButtonElement).onClick.listen(toggle);
@@ -39,13 +41,13 @@ class User {
     _brain.toggle();
     _hasStarted = !_hasStarted;
     if (_hasStarted) {
-      (querySelector('#start') as ButtonElement).text = 'Stop';
-      (querySelector('#start') as ButtonElement).style.background = 'linear-gradient(#e54e4e 0%,#d53838 100%)';
-      (querySelector('#start') as ButtonElement).style.borderBottom = '4px solid #c62b2b';
+      _startBtn.text = 'Stop';
+      _startBtn.style.background = 'linear-gradient(#e54e4e 0%,#d53838 100%)';
+      _startBtn.style.borderBottom = '4px solid #c62b2b';
     } else {
-      (querySelector('#start') as ButtonElement).text = 'Start';
-      (querySelector('#start') as ButtonElement).style.background = 'linear-gradient(#4eb5e5 0%,#389ed5 100%)';
-      (querySelector('#start') as ButtonElement).style.borderBottom = '4px solid #2b8ac6';
+      _startBtn.text = 'Start';
+      _startBtn.style.background = 'linear-gradient(#4eb5e5 0%,#389ed5 100%)';
+      _startBtn.style.borderBottom = '4px solid #2b8ac6';
     }
   }
 
