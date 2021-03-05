@@ -2271,7 +2271,7 @@ t=q.c.style
 t.borderBottom="4px solid #2b8ac6"}},
 au:function(a){u.X.a(a)
 this.e.L(0,null)},
-X:function(){var t,s,r
+X:function(){var t,s,r,q=this
 $.a9=650
 t=$.x
 s=C.d.A(650/t)
@@ -2282,20 +2282,20 @@ t=$.x
 r=$.C
 if(typeof r!=="number")return H.V(r);(s&&C.f).sa0(s,t*r)
 $.a9=$.a4.height
-this.a_(null)
-r=$.a9
-t=$.C
-if(typeof r!=="number")return r.a1()
-if(typeof t!=="number")return H.V(t)
-t=C.d.A(r/t)
-t=U.cr(t,t)
-this.d=t
-r=this.e
-r.c=0
-r.a=!0
-C.a.sk(r.e,0)
-C.a.sk(r.d,0)
-r.b=t},
+if(q.b)q.a_(null)
+t=$.a9
+s=$.C
+if(typeof t!=="number")return t.a1()
+if(typeof s!=="number")return H.V(s)
+s=C.d.A(t/s)
+s=U.cr(s,s)
+q.d=s
+t=q.e
+t.c=0
+t.a=!0
+C.a.sk(t.e,0)
+C.a.sk(t.d,0)
+t.b=s},
 an:function(a){u.X.a(a)
 $.x=$.x+1
 J.bk(document.querySelector("#nb-cells"),C.c.h($.x))
