@@ -1,58 +1,62 @@
 import 'dart:async';
 import 'dart:math';
 import 'Board.dart';
+import 'globals.dart' as globals;
 
 class Brain {
-  bool shouldStop = true;
-  Board board;
-  List<Point> nextDarkCells;
-  List<Point> nextWhiteCells;
+  bool _shouldStop = true;
+  Board _board;
+  List<Point> _nextDarkCells;
+  List<Point> _nextWhiteCells;
 
   bool get isStopped {
-    return shouldStop;
+    return _shouldStop;
   }
 
-  Brain(this.board) {
-    nextDarkCells = [];
-    nextWhiteCells = [];
+  Brain(this._board) {
+    _nextDarkCells = [];
+    _nextWhiteCells = [];
   }
-  
+
+  /// resets the brain for a new start
   void reset(Board board) {
-    shouldStop = true;
-    nextWhiteCells.clear();
-    nextDarkCells.clear();
-    this.board = board;
+    _shouldStop = true;
+    _nextWhiteCells.clear();
+    _nextDarkCells.clear();
+    _board = board;
   }
 
+  /// Starts the simulation in loop mode by triggering this.step() every globals.TURN_TIME ms
   void toggle() {
-    shouldStop = !shouldStop;
-    Timer.periodic(Duration(milliseconds: 500), step);
+    _shouldStop = !_shouldStop;
+    Timer.periodic(Duration(milliseconds: globals.TURN_TIME), step);
   }
 
+  /// Triggers one iteration of the algorithm
   void step(Timer timer) {
-    nextDarkCells.clear();
-    nextWhiteCells.clear();
-    if (timer != null && shouldStop) {
+    _nextDarkCells.clear();
+    _nextWhiteCells.clear();
+    if (timer != null && _shouldStop) {
       timer.cancel();
     }
-    for (Point cell in board.darkPoints) {
+    for (Point cell in _board.darkPoints) {
       int count = countNeighbours(cell);
       if (count < 2 || count > 3) {
-        // will be white -> not added to board._nextDarkPoints
-        nextWhiteCells.add(cell);
+        _nextWhiteCells.add(cell);
       } else {
-        nextDarkCells.add(cell);
+        _nextDarkCells.add(cell);
       }
     }
-    for (Point cell in board.adjacentWhitePoints) {
+    for (Point cell in _board.adjacentWhitePoints) {
       int count = countNeighbours(cell);
       if (count == 3) {
-        nextDarkCells.add(cell);
+        _nextDarkCells.add(cell);
       }
     }
-    board.update(nextDarkCells, nextWhiteCells);
+    _board.update(_nextDarkCells, _nextWhiteCells);
   }
 
+  /// returns the number of cells adjacent to the one at position $coords
   int countNeighbours(Point coords) {
     int score = 0;
 
@@ -60,11 +64,11 @@ class Brain {
       for (int j = -1; j < 2; j++) {
         int x = coords.x + i;
         int y = coords.y + j;
-        if (x >= 0 && x < board.cols && y >= 0 && y < board.rows) {
-          score += board.board[y][x];
+        if (x >= 0 && x < _board.cols && y >= 0 && y < _board.rows) {
+          score += _board.board[y][x];
         }
-      }    
+      }
     }
-    return score - board.board[coords.y][coords.x];
+    return score - _board.board[coords.y][coords.x];
   }
 }

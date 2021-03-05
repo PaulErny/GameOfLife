@@ -1,54 +1,56 @@
 import 'dart:html';
-import 'dart:async';
 import 'globals.dart' as globals;
 import 'Board.dart';
 import 'Brain.dart';
 
 class User {
-  var clientRect = globals.ctx.canvas.getBoundingClientRect();
-  StreamSubscription<MouseEvent> mouseDownListener;
-  StreamSubscription<MouseEvent> startBtnListener;
-  StreamSubscription<MouseEvent> nextBtnListener;
-  bool hasStarted = false;
-  Board board;
-  Brain brain;
- 
+  var _clientRect;
+  bool _hasStarted = false;
+  Board _board;
+  Brain _brain;
+
   User() {
-    mouseDownListener = globals.ctx.canvas.onMouseDown.listen((event) => mouseDown(event));
-    startBtnListener = (querySelector('#start') as ButtonElement ).onClick.listen(toggle);
-    nextBtnListener = (querySelector('#next') as ButtonElement ).onClick.listen(next);
-    (querySelector('#plus') as ButtonElement ).onClick.listen(addCells);
-    (querySelector('#less') as ButtonElement ).onClick.listen(removeCells);
+    _clientRect = globals.ctx.canvas.getBoundingClientRect();
+    globals.ctx.canvas.onMouseDown.listen(placeCell);
+    (querySelector('#start') as ButtonElement).onClick.listen(toggle);
+    (querySelector('#next') as ButtonElement).onClick.listen(next);
+    (querySelector('#plus') as ButtonElement).onClick.listen(addCells);
+    (querySelector('#less') as ButtonElement).onClick.listen(removeCells);
     querySelector('#nb-cells').text = globals.NB_CELLS.toString();
-    board = Board((globals.CANVAS_SIZE / globals.CELL_SIZE).round(), (globals.CANVAS_SIZE / globals.CELL_SIZE).round());
-    brain = Brain(board);
+    _board = Board((globals.CANVAS_SIZE / globals.CELL_SIZE).round(),
+        (globals.CANVAS_SIZE / globals.CELL_SIZE).round());
+    _brain = Brain(_board);
   }
 
-  void mouseDown(MouseEvent event) {
+  /// place a cell on the position of the mouse click
+  void placeCell(MouseEvent event) {
     event.preventDefault();
-    int x = ((event.client.x - clientRect.left) / globals.CELL_SIZE).floor();
-    int y = ((event.client.y - clientRect.top) / globals.CELL_SIZE).floor();
-    if (board.board[y][x] == 0) {
-      board.updateCell(Point(x, y), 1);
+    int x = ((event.client.x - _clientRect.left) / globals.CELL_SIZE).floor();
+    int y = ((event.client.y - _clientRect.top) / globals.CELL_SIZE).floor();
+    if (_board.board[y][x] == 0) {
+      _board.updateCell(Point(x, y), 1);
     } else {
-      board.updateCell(Point(x, y), 0);
+      _board.updateCell(Point(x, y), 0);
     }
   }
 
+  /// Start / stop the algorithm in endless loop mode
   void toggle(MouseEvent event) {
-    brain.toggle();
-    hasStarted = !hasStarted;
-    if (hasStarted) {
-      (querySelector('#start') as ButtonElement ).text = 'Stop';
+    _brain.toggle();
+    _hasStarted = !_hasStarted;
+    if (_hasStarted) {
+      (querySelector('#start') as ButtonElement).text = 'Stop';
     } else {
-      (querySelector('#start') as ButtonElement ).text = 'Start';
+      (querySelector('#start') as ButtonElement).text = 'Start';
     }
   }
 
+  /// Triggers one computation of the algorithm
   void next(MouseEvent event) {
-    brain.step(null);
+    _brain.step(null);
   }
 
+  /// recreates a board with the amount of cells the user wants
   void resizeBoard() {
     globals.CANVAS_SIZE = globals.DEFAULT_CANVAS_SIZE;
     globals.CELL_SIZE = (globals.CANVAS_SIZE / globals.NB_CELLS).round();
@@ -57,16 +59,19 @@ class User {
     globals.canvas.width = globals.NB_CELLS * globals.CELL_SIZE;
     globals.CANVAS_SIZE = globals.canvas.height;
     toggle(null);
-    board = Board((globals.CANVAS_SIZE / globals.CELL_SIZE).round(), (globals.CANVAS_SIZE / globals.CELL_SIZE).round());
-    brain.reset(board);
+    _board = Board((globals.CANVAS_SIZE / globals.CELL_SIZE).round(),
+        (globals.CANVAS_SIZE / globals.CELL_SIZE).round());
+    _brain.reset(_board);
   }
 
+  /// increases the amount of cells on the board by 1 row and 1 column
   void addCells(MouseEvent event) {
     globals.NB_CELLS++;
     querySelector('#nb-cells').text = globals.NB_CELLS.toString();
     resizeBoard();
   }
 
+  /// decreases the amount of cells on the board by 1 row and 1 column
   void removeCells(MouseEvent event) {
     if (globals.NB_CELLS > 10) {
       globals.NB_CELLS--;
